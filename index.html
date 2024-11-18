@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أوقات الصلاة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e1e2f, #1a1a27);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .nav-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .date-time {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .current-time {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .date {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .prayer-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prayer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .prayer-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .prayer-time {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #b8b8b8;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #b8b8b8;
+        }
+
+        .next-prayer {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        /* Footer Styles */
+        .footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-text {
+            color: #b8b8b8;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-list {
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .current-time {
+                font-size: 2.5rem;
+            }
+
+            .prayer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-book-quran"></i>
+                    القرآن الكريم
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-pray"></i>
+                    الأذكار
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-mosque"></i>
+                    المساجد القريبة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-kaaba"></i>
+                    القبلة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-prayer-beads"></i>
+                    المسبحة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    الختمات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-scroll"></i>
+                    دعاء ختم القرآن
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <header class="header">
+        <div class="date-time">
+            <div id="current-time" class="current-time">00:00:00</div>
+            <div id="gregorian-date" class="date">التاريخ الميلادي</div>
+        </div>
+        <div id="location">جاري تحديد الموقع...</div>
+    </header>
+
+    <div class="prayer-grid">
+        <div class="prayer-card" id="fajr">
+            <div class="prayer-name">الفجر</div>
+            <div class="prayer-time">--:--</div>
+        </div>
+        <div class="prayer-card" id="sunrise">
+            <div class="prayer-name">الشروق</div>
+            <div class="prayer-time">--:--</div>
+        </div>
+        <div class="prayer-card" id="dhuhr">
+            <div class="prayer-name">الظهر</div>
+            <div class="prayer-time">--:--</div>
+        </div>
+        <div class="prayer-card" id="asr">
+            <div class="prayer-name">العصر</div>
+            <div class="prayer-time">--:--</div>
+        </div>
+        <div class="prayer-card" id="maghrib">
+            <div class="prayer-name">المغرب</div>
+            <div class="prayer-time">--:--</div>
+        </div>
+        <div class="prayer-card" id="isha">
+            <div class="prayer-name">العشاء</div>
+            <div class="prayer-time">--:--</div>
+        </div>
+    </div>
+
+    <div class="countdown-container">
+        <div class="countdown-title">الوقت المتبقي حتى الصلاة القادمة</div>
+        <div class="countdown">
+            <div class="countdown-item">
+                <div id="hours" class="countdown-value">00</div>
+                <div class="countdown-label">ساعة</div>
+            </div>
+            <div class="countdown-item">
+                <div id="minutes" class="countdown-value">00</div>
+                <div class="countdown-label">دقيقة</div>
+            </div>
+            <div class="countdown-item">
+                <div id="seconds" class="countdown-value">00</div>
+                <div class="countdown-label">ثانية</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-text">
+                <p>مواقيت الصلاة تصميم وتطوير معاذ الحارثي © 2024</p>
+                <p>جميع الحقوق محفوظة</p>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    function updateDateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-SA');
+        const dateString = now.toLocaleDateString('ar-SA', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        document.getElementById('current-time').textContent = timeString;
+        document.getElementById('gregorian-date').textContent = dateString;
+    }
+
+    function updatePrayerTimes(timings) {
+        document.querySelector('#fajr .prayer-time').textContent = timings.Fajr;
+        document.querySelector('#sunrise .prayer-time').textContent = timings.Sunrise;
+        document.querySelector('#dhuhr .prayer-time').textContent = timings.Dhuhr;
+        document.querySelector('#asr .prayer-time').textContent = timings.Asr;
+        document.querySelector('#maghrib .prayer-time').textContent = timings.Maghrib;
+        document.querySelector('#isha .prayer-time').textContent = timings.Isha;
+    }
+
+    function initializeApp() {
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                document.getElementById('location').textContent = `الموقع: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+
+                const date = new Date();
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                
+                fetch(`https://api.aladhan.com/v1/timings/${date.getDate()}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=4`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.code === 200) {
+                            updatePrayerTimes(data.data.timings);
+                            document.getElementById('location').textContent = 'تم تحديث أوقات الصلاة بنجاح';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('location').textContent = 'خطأ في جلب أوقات الصلاة';
+                    });
+            });
+        } else {
+            document.getElementById('location').textContent = 'المتصفح لا يدعم تحديد الموقع';
+        }
+    }
+
+    window.onload = initializeApp;
+    
+    function convertToMinutes(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
+function getNextPrayer(timings) {
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    
+    const prayerTimes = {
+        'الفجر': convertToMinutes(timings.Fajr),
+        'الشروق': convertToMinutes(timings.Sunrise),
+        'الظهر': convertToMinutes(timings.Dhuhr),
+        'العصر': convertToMinutes(timings.Asr),
+        'المغرب': convertToMinutes(timings.Maghrib),
+        'العشاء': convertToMinutes(timings.Isha)
+    };
+
+    let nextPrayer = null;
+    let nextPrayerTime = Infinity;
+
+    for (const [prayer, time] of Object.entries(prayerTimes)) {
+        if (time > currentMinutes && time < nextPrayerTime) {
+            nextPrayer = prayer;
+            nextPrayerTime = time;
+        }
+    }
+
+    if (!nextPrayer) {
+        nextPrayer = 'الفجر';
+        nextPrayerTime = prayerTimes['الفجر'] + 24 * 60;
+    }
+
+    return { name: nextPrayer, timeInMinutes: nextPrayerTime };
+}
+
+function updateCountdown(timings) {
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const currentSeconds = now.getSeconds();
+    
+    const nextPrayer = getNextPrayer(timings);
+    let remainingMinutes = nextPrayer.timeInMinutes - currentMinutes;
+    
+    if (remainingMinutes < 0) {
+        remainingMinutes += 24 * 60;
+    }
+
+    const hours = Math.floor(remainingMinutes / 60);
+    const minutes = remainingMinutes % 60;
+    const seconds = 59 - currentSeconds;
+
+    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    
+    document.querySelector('.countdown-title').textContent = `الوقت المتبقي حتى ${nextPrayer.name}`;
+}
+
+// تعديل دالة updatePrayerTimes لتشمل تحديث العد التنازلي
+function updatePrayerTimes(timings) {
+    document.querySelector('#fajr .prayer-time').textContent = timings.Fajr;
+    document.querySelector('#sunrise .prayer-time').textContent = timings.Sunrise;
+    document.querySelector('#dhuhr .prayer-time').textContent = timings.Dhuhr;
+    document.querySelector('#asr .prayer-time').textContent = timings.Asr;
+    document.querySelector('#maghrib .prayer-time').textContent = timings.Maghrib;
+    document.querySelector('#isha .prayer-time').textContent = timings.Isha;
+
+    // تحديث العد التنازلي كل ثانية
+    setInterval(() => updateCountdown(timings), 1000);
+    updateCountdown(timings);
+}
+
+// تعديل دالة initializeApp
+function initializeApp() {
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            document.getElementById('location').textContent = `الموقع: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            
+            fetch(`https://api.aladhan.com/v1/timings/${date.getDate()}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=4`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === 200) {
+                        updatePrayerTimes(data.data.timings);
+                        document.getElementById('location').textContent = 'تم تحديث أوقات الصلاة بنجاح';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('location').textContent = 'خطأ في جلب أوقات الصلاة';
+                });
+        });
+    } else {
+        document.getElementById('location').textContent = 'المتصفح لا يدعم تحديد الموقع';
+    }
+}
+
+window.onload = initializeApp;
+
+    
+    
+    
+</script>
+</body>
+</html>
